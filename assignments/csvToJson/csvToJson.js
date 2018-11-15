@@ -9,10 +9,14 @@ const fileFolder = 'files';
 createJsonFile = (json, jsonFile = 'customer-data.json') => {
     fs.writeFileSync(path.join(__dirname, fileFolder, jsonFile), json);
 }
+
 /* converting csv to json from a csv file */
-ConvertCsvToJson = (csvFile = 'customer-data.csv') => {
-    csv({ flatKeys: true }).fromFile(path.join(__dirname, fileFolder, csvFile))
-        .then((json) => {
-            createJsonFile(JSON.stringify(json, null, 2));
-        });
+convertCsvToJson = (csvFile = 'customer-data.csv') => {
+    let json = [];
+    csv().fromFile(path.join(__dirname, fileFolder, csvFile))
+        .on('error', (err) => { console.log(`Error occur ${err}`) })
+        .then((json) => { createJsonFile(JSON.stringify(json, null, 2)) })
 }
+
+/* calling without an argument to use default @param */
+convertCsvToJson();
